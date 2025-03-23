@@ -1,7 +1,5 @@
 import { auth } from "@clerk/nextjs";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { PDFLoader } from "langchain/document_loaders/fs/pdf";
-import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { prisma } from "@/lib/prisma";
 
 const f = createUploadthing();
@@ -17,26 +15,17 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       const { userId } = metadata;
-      
-      let content = "";
-      
-      if (file.type === "application/pdf") {
-        const loader = new PDFLoader(file.url);
-        const docs = await loader.load();
-        content = docs.map(doc => doc.pageContent).join("\n");
-      } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-        const loader = new DocxLoader(file.url);
-        const docs = await loader.load();
-        content = docs.map(doc => doc.pageContent).join("\n");
-      }
 
+      // Store the file URL and basic metadata
       await prisma.resume.create({
         data: {
           userId,
           title: file.name,
-          content,
+          content: `File uploaded: ${file.name}\nURL: ${file.url}\nSize: ${file.size} bytes\nType: ${file.type}`,
         },
       });
+
+      return { uploadedBy: userId };
     }),
 } satisfies FileRouter;
 

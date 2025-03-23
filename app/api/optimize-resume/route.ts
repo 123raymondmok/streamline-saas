@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 
     // Generate optimization suggestions using OpenAI
     const prompt = `
-      You are an expert resume optimizer. Given the following resume and job description,
+      You are an expert resume optimizer. Given the following resume information and job description,
       provide specific suggestions to optimize the resume for this job opportunity.
       Focus on:
       1. Matching keywords and skills
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
       3. Quantifying achievements
       4. Maintaining professional tone
 
-      Resume:
+      Resume Information:
       ${resume.content}
 
       Job Description:

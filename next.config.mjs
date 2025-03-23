@@ -15,11 +15,13 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    domains: ['uploadthing.com', 'utfs.io'],
   },
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+    serverActions: true,
   },
 }
 
