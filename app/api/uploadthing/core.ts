@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { prisma } from "@/lib/prisma";
 
@@ -7,7 +7,7 @@ const f = createUploadthing();
 export const ourFileRouter = {
   resumeUploader: f({ pdf: { maxFileSize: "4MB" }, docx: { maxFileSize: "4MB" } })
     .middleware(async () => {
-      const { userId } = auth();
+      const { userId } = getAuth();
 
       if (!userId) throw new Error("Unauthorized");
 
